@@ -1,28 +1,25 @@
-
-from datetime import datetime, timezone
-
 from fastapi import FastAPI
 
+from backend.app.api.routes.health import router as health_router
+from backend.app.core.config import settings
+
 app = FastAPI(
-    title="DocuMind AI",
+    title=settings.APP_NAME,
+    version=settings.APP_VERSION,
     description="AI-powered Document Intelligence Platform",
-    version="0.1.0",
 )
 
 
-@app.get("/")
+@app.get("/", tags=["General"])
 async def root():
     return {
-        "application": "DocuMind AI",
-        "message": "Welcome to the Document Intelligence Platform",
-        "version": "0.1.0",
+        "application": settings.APP_NAME,
+        "version": settings.APP_VERSION,
         "status": "running",
     }
 
 
-@app.get("/health")
-async def health_check():
-    return {
-        "status": "healthy",
-        "timestamp": datetime.now(timezone.utc).isoformat(),
-    }
+app.include_router(
+    health_router,
+    prefix=settings.API_V1_PREFIX,
+)
