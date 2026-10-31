@@ -8,6 +8,11 @@ class Settings(BaseSettings):
     APP_ENV: str = "development"
     API_V1_PREFIX: str = "/api/v1"
 
+    # Document upload configuration
+    MAX_UPLOAD_SIZE_MB: int = 10
+    UPLOAD_DIR: str = "storage/uploads"
+    ALLOWED_EXTENSIONS: list[str] = [".pdf", ".docx", ".txt"]
+
     model_config = SettingsConfigDict(
         env_file=".env",
         env_file_encoding="utf-8",
